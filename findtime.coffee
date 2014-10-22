@@ -165,7 +165,7 @@ patterns =
 
 
 module.exports = (str) ->
-  us.pairs(patterns).map(([name, pattern]) ->
+  result = us.pairs(patterns).map(([name, pattern]) ->
     if match = pattern.regexp.exec(str)
       {
         index: match.index 
@@ -178,3 +178,5 @@ module.exports = (str) ->
   ).filter((o) -> o?).sort( (a,b) ->
     a.index - b.index  
   )
+
+  return if result.length > 0 then result else null

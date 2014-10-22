@@ -185,7 +185,8 @@
   };
 
   module.exports = function(str) {
-    return us.pairs(patterns).map(function(_arg) {
+    var result;
+    result = us.pairs(patterns).map(function(_arg) {
       var match, name, pattern;
       name = _arg[0], pattern = _arg[1];
       if (match = pattern.regexp.exec(str)) {
@@ -204,6 +205,11 @@
     }).sort(function(a, b) {
       return a.index - b.index;
     });
+    if (result.length > 0) {
+      return result;
+    } else {
+      return null;
+    }
   };
 
 }).call(this);
