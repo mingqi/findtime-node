@@ -191,9 +191,11 @@ iso8601_basic =
 patterns = 
   standard : standard  # 2012-11-02 14:34:02
   iso8601 : iso8601  # 2012-11-02T14:34:02
+  date_zone : date_zone
   date : date     # 02 Nov 2012 14:34:02
   syslog : syslog   # Sep 29 06:33:21
   nginx : nginx   # 2014/09/29 12:05:34
+  apache_zone : apache_zone
   apache : apache   # 10/Oct/2000:13:55:36
   absolute : absolute # 14:34:02
   iso8601_basic : iso8601_basic # 20121102T143402

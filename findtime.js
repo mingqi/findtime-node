@@ -216,9 +216,11 @@
   patterns = {
     standard: standard,
     iso8601: iso8601,
+    date_zone: date_zone,
     date: date,
     syslog: syslog,
     nginx: nginx,
+    apache_zone: apache_zone,
     apache: apache,
     absolute: absolute,
     iso8601_basic: iso8601_basic
