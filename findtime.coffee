@@ -1,4 +1,5 @@
 us = require 'underscore'
+moment = require 'moment'
 
 ###
   auto find timestamp from log line
@@ -11,11 +12,13 @@ us = require 'underscore'
       ISO8601_BASIC: 20121102T143402,781
       ABSOLUTE: 14:34:02,781
       DATE: 02 Nov 2012 14:34:02,781
+      DATE with zone: 02 Nov 2012 14:34:02 GMT+08:00
       COMPACT: 20121102143402781
       UNIX: 1351866842
       UNIX_MILLIS: 1351866842781
   - nginx: 2014/09/29 12:05:34
-  - apache acess: 10/Oct/2000:13:55:36 -0700
+  - apache acess: 10/Oct/2000:13:55:36
+  - apache acess with zone: 10/Oct/2000:13:55:36 -0700
   - apache error: Fri Dec 16 01:46:23 2005
 
 ###
@@ -123,6 +126,22 @@ apache =
       second: r[i+=1]
     } 
 
+apache_zone =
+  ## 10/Oct/2000:13:55:36
+  regexp : new RegExp("(\\d{1,2})/(#{MONTHS_REGEXP})/(20\\d{1,2}):(\\d{1,2}):(\\d{1,2}):(\\d{1,2})\\s+((\\+|\\-)\\d{4})")
+  parse : (str) ->
+    r = @regexp.exec(str)
+    i = 0
+    return {
+      day: r[i+=1]
+      month: MONTHS[r[i+=1]]
+      year: r[i+=1]
+      hour: r[i+=1]
+      minute: r[i+=1]
+      second: r[i+=1]
+      offset: moment().zone(r[i+=1]).zone()
+    } 
+
 date = 
   ## 02 Nov 2012 14:34:02
   regexp : new RegExp("(\\d{1,2})\\s+(#{MONTHS_REGEXP})\\s+(20\\d{1,2})\\s+(\\d{1,2}):(\\d{1,2}):(\\d{1,2})")
@@ -136,6 +155,22 @@ date =
       hour: r[i+=1]
       minute: r[i+=1]
       second: r[i+=1]
+    } 
+
+date_zone = 
+  ## 30 Oct 2014 08:42:22 GMT+08:00
+  regexp : new RegExp("(\\d{1,2})\\s+(#{MONTHS_REGEXP})\\s+(20\\d{1,2})\\s+(\\d{1,2}):(\\d{1,2}):(\\d{1,2})\\s+(GMT((\\+|\\-)\\d{2}:\\d{2})?)")
+  parse : (str) ->
+    r = @regexp.exec(str)
+    i = 0
+    return {
+      day: r[i+=1]
+      month: MONTHS[r[i+=1]]
+      year: r[i+=1]
+      hour: r[i+=1]
+      minute: r[i+=1]
+      second: r[i+=1]
+      offset: moment().zone(r[i+=1]).zone() 
     } 
 
 iso8601_basic = 
